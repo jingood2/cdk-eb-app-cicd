@@ -44,7 +44,7 @@ export class BeanstalkStack extends cdk.Stack {
       {
         namespace: 'aws:ec2:instances',
         optionName: 'InstanceTypes',
-        value: 't3.small',
+        value: 't3.micro',
       },
       {
         namespace: 'aws:autoscaling:launchconfiguration',
