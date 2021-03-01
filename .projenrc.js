@@ -10,6 +10,7 @@ const project = new AwsCdkTypeScriptApp({
   // appEntrypoint: 'main.ts',                                                 /* The CDK app's entrypoint (relative to the source directory, which is "src" by default). */
   cdkDependencies: [
     '@aws-cdk/aws-codecommit',
+    '@aws-cdk/aws-codebuild',
     '@aws-cdk/aws-codedeploy',
     '@aws-cdk/aws-codepipeline',
     '@aws-cdk/aws-codepipeline-actions',
@@ -18,6 +19,7 @@ const project = new AwsCdkTypeScriptApp({
     '@aws-cdk/pipelines',
     '@aws-cdk/aws-iam',
     '@aws-cdk/aws-s3-assets',
+    '@aws-cdk/aws-elasticbeanstalk',
   ], /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
   // cdkVersionPinning: false,                                                 /* Use pinned version instead of caret version for CDK. */
   context: {
@@ -35,7 +37,9 @@ const project = new AwsCdkTypeScriptApp({
   // autoDetectBin: true,                                                      /* Automatically add all executables under the `bin` directory to your `package.json` file under the `bin` section. */
   // bin: undefined,                                                           /* Binary programs vended with your module. */
   // bundledDeps: undefined,                                                   /* List of dependencies to bundle into this module. */
-  // deps: [],                                                                 /* Runtime dependencies of this module. */
+  deps: [
+    'chalk',
+  ], /* Runtime dependencies of this module. */
   // description: undefined,                                                   /* The description is just a string that helps people understand the purpose of the package. */
   devDeps: [
     'cdk-assume-role-credential-plugin',

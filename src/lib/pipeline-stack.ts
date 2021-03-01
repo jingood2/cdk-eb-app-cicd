@@ -4,6 +4,7 @@ import * as cdk from '@aws-cdk/core';
 // eslint-disable-next-line no-duplicate-imports
 import { SecretValue } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from '@aws-cdk/pipelines';
+import { BeanstalkStage } from './app-stage';
 
 export interface PipelineStackProps extends cdk.StackProps {
 
@@ -44,5 +45,6 @@ export class PipelineStack extends cdk.Stack {
       }),
     });
 
+    this.pipeline.addApplicationStage(new BeanstalkStage(this, 'BeanstalkStage', {}));
   }
 }

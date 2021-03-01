@@ -166,7 +166,7 @@
     "@aws-cdk/core" "1.91.0"
     constructs "^3.2.0"
 
-"@aws-cdk/aws-codebuild@1.91.0":
+"@aws-cdk/aws-codebuild@1.91.0", "@aws-cdk/aws-codebuild@^1.91.0":
   version "1.91.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-codebuild/-/aws-codebuild-1.91.0.tgz#ea55ff0f6e789be41554ebe9343a1bfd0b8c9257"
   integrity sha512-7CLnGa3XDZfSoVhptsnCsXAqngCQOsXnLsrrqByhUMbZSsBS6vmVzNS6zXDcNtk3XvdqPy13wEsTXETljZXQPw==
@@ -358,6 +358,14 @@
     "@aws-cdk/cloud-assembly-schema" "1.91.0"
     "@aws-cdk/core" "1.91.0"
     "@aws-cdk/cx-api" "1.91.0"
+    constructs "^3.2.0"
+
+"@aws-cdk/aws-elasticbeanstalk@^1.91.0":
+  version "1.91.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-elasticbeanstalk/-/aws-elasticbeanstalk-1.91.0.tgz#179618df60d91a18cfc48cfd9d6f0d998f4f1a2a"
+  integrity sha512-GDp5mqcoKaWaXxfTDo+W4ZmkLzwN0PLar/fcOccSl/8NdRRe3YukEBFWZ08e4Eo73U0fZLy05UM77txzCuft9w==
+  dependencies:
+    "@aws-cdk/core" "1.91.0"
     constructs "^3.2.0"
 
 "@aws-cdk/aws-elasticloadbalancing@1.91.0":
