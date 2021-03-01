@@ -20,4 +20,4 @@ const app = new App();
 new PipelineStack(app, 'CdkEBPipelineStack', { env: devEnv });
 // new MyStack(app, 'my-stack-prod', { env: prodEnv });
 
-app.synth();
+//app.synth();
