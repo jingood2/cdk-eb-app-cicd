@@ -1,16 +1,29 @@
 const { AwsCdkTypeScriptApp } = require('projen');
 
 const project = new AwsCdkTypeScriptApp({
-  cdkVersion: '1.73.0',
+  cdkVersion: '1.91.0',
   defaultReleaseBranch: 'main',
-  jsiiFqn: "projen.AwsCdkTypeScriptApp",
+  jsiiFqn: 'projen.AwsCdkTypeScriptApp',
   name: 'cdk-tomcat-beanstalk-pipeline',
 
   /* AwsCdkTypeScriptAppOptions */
   // appEntrypoint: 'main.ts',                                                 /* The CDK app's entrypoint (relative to the source directory, which is "src" by default). */
-  // cdkDependencies: undefined,                                               /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
+  cdkDependencies: [
+    '@aws-cdk/aws-codecommit',
+    '@aws-cdk/aws-codedeploy',
+    '@aws-cdk/aws-codepipeline',
+    '@aws-cdk/aws-codepipeline-actions',
+    '@aws-cdk/core',
+    '@aws-cdk/aws-s3',
+    '@aws-cdk/pipelines',
+    '@aws-cdk/aws-iam',
+    '@aws-cdk/aws-s3-assets',
+  ], /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
   // cdkVersionPinning: false,                                                 /* Use pinned version instead of caret version for CDK. */
-  // context: undefined,                                                       /* Additional context to include in `cdk.json`. */
+  context: {
+    '@aws-cdk/core:newStyleStackSynthesis': true,
+    'repositoryName': 'cdk-tomcat-beanstalk-pipeline',
+  }, /* Additional context to include in `cdk.json`. */
   // requireApproval: CdkApprovalLevel.BROADENING,                             /* To protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security-related changes before deploying them. */
 
   /* NodePackageOptions */
@@ -24,7 +37,9 @@ const project = new AwsCdkTypeScriptApp({
   // bundledDeps: undefined,                                                   /* List of dependencies to bundle into this module. */
   // deps: [],                                                                 /* Runtime dependencies of this module. */
   // description: undefined,                                                   /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],                                                              /* Build dependencies for this module. */
+  devDeps: [
+    'cdk-assume-role-credential-plugin',
+  ], /* Build dependencies for this module. */
   // entrypoint: 'lib/index.js',                                               /* Module entrypoint (`main` in `package.json`). */
   // homepage: undefined,                                                      /* Package's Homepage / Website. */
   // keywords: undefined,                                                      /* Keywords to include in `package.json`. */
@@ -110,4 +125,6 @@ const project = new AwsCdkTypeScriptApp({
   // typescriptVersion: '^3.9.5',                                              /* TypeScript version to use. */
 });
 
+
+project.cdkConfig.plugin = ['cdk-assume-role-credential-plugin'];
 project.synth();
