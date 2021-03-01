@@ -1,7 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import { BeanstalkStack } from './beanstalk-stack';
 
-export interface BeanstalkStageProps extends cdk.Stage {
+export interface BeanstalkStageProps extends cdk.StackProps {
 
 }
 
