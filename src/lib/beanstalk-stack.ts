@@ -84,7 +84,7 @@ export class BeanstalkStack extends cdk.Stack {
     });
 
     const project = new Codebuild.Project(this, envVars.APP_NAME, {
-      //buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
+      ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
       buildSpec: Codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
