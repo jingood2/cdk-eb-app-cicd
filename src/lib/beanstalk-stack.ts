@@ -18,7 +18,7 @@ export class BeanstalkStack extends cdk.Stack {
     //const platform = this.node.tryGetContext('platform');
 
     // beanstalk project setup
-    const ebApp = new EB.CfnApplication(this, `${envVars.APP_NAME}`, {
+    const ebApp = new EB.CfnApplication(this, `${envVars.APP_NAME}-app`, {
       applicationName: envVars.APP_NAME,
     });
 
