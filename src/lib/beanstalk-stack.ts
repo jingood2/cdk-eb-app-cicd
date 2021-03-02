@@ -54,11 +54,6 @@ export class BeanstalkStack extends cdk.Stack {
         // https://stackoverflow.com/a/55033663/6894670
         value: 'aws-elasticbeanstalk-ec2-role',
       },
-      {
-        namespace: 'aws:elasticbeanstalk:xray',
-        optionName: 'XRayEnabled',
-        value: 'true',
-      },
     ];
 
     const appName = 'app';

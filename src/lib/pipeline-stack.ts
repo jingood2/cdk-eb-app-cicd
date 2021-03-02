@@ -45,6 +45,6 @@ export class PipelineStack extends cdk.Stack {
       }),
     });
 
-    this.pipeline.addApplicationStage(new BeanstalkStage(this, 'BeanstalkStage', {}));
+    this.pipeline.addApplicationStage(new BeanstalkStage(this, 'DEV', {}));
   }
 }
