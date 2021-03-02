@@ -4,7 +4,6 @@ import * as EB from '@aws-cdk/aws-elasticbeanstalk';
 import * as IAM from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 // eslint-disable-next-line no-duplicate-imports
-import { SecretValue } from '@aws-cdk/core';
 import { envVars } from './config';
 
 
