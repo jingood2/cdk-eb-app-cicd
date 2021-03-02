@@ -115,7 +115,7 @@ export class BeanstalkStack extends cdk.Stack {
             },
           },
           pre_build: {
-            commands: ['npm install awsebcli'],
+            commands: ['pip install awsebcli', 'eb --version'],
           },
           build: {
             commands: [
