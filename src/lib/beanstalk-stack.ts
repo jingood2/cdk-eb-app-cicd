@@ -31,10 +31,31 @@ export class BeanstalkStack extends cdk.Stack {
         value: envVars.VPC_ID,
 
       },
+      /*  {
+        namespace: 'aws:ec2:vpc',
+        optionName: 'ELBSubnets',
+        value: 'subnet-06bab824613954777,subnet-0e4882323b34072f0',
+      }, */
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'Subnets',
-        value: 'subnet-0a96c515fce44d495',
+        //value: 'subnet-0a96c515fce44d495',
+        value: 'subnet-06bab824613954777',
+      },
+      {
+        namespace: 'aws:autoscaling:asg',
+        optionName: 'AvailabilityZones',
+        value: 'Any',
+      },
+      {
+        namespace: 'aws:autoscaling:asg',
+        optionName: 'MaxSize',
+        value: '2',
+      },
+      {
+        namespace: 'aws:autoscaling:asg',
+        optionName: 'MinSize',
+        value: '1',
       },
       {
         namespace: 'aws:ec2:instances',
