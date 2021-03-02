@@ -122,9 +122,9 @@ export class BeanstalkStack extends cdk.Stack {
               'mvn package', 'mv target/*.war ROOT.war',
             ],
           },
-          //post_build: {
-          //  commands: [`eb deploy ${envVars.APP_STAGE_NAME}`],
-          //},
+          post_build: {
+            commands: [`eb deploy ${envVars.APP_STAGE_NAME}`],
+          },
         },
         artifacts: {
           files: [
