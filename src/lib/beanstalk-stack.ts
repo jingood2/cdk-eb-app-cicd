@@ -27,18 +27,18 @@ export class BeanstalkStack extends cdk.Stack {
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'VPCId',
-        value: this.node.tryGetContext('VPC_ID'),
+        value: envVars.VPC_ID,
 
       },
-      /*   {
+      {
         namespace: 'aws:ec2:vpc',
         optionName: 'ELBSubnets',
-        value: this.node.tryGetContext('PUB_SUBNET_ID'),
-      }, */
+        value: envVars.PUB_SUBNET_ID[0],
+      },
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'Subnets',
-        value: this.node.tryGetContext('PRI_SUBNET_ID'),
+        value: envVars.PRI_SUBNET_ID[0],
       },
       {
         namespace: 'aws:ec2:instances',
