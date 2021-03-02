@@ -34,13 +34,12 @@ export class BeanstalkStack extends cdk.Stack {
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'ELBSubnets',
-        value: 'subnet-06bab824613954777,subnet-0e4882323b34072f0',
+        value: envVars.PUB_SUBNET_ID,
       },
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'Subnets',
-        //value: 'subnet-0a96c515fce44d495',
-        value: 'subnet-0a96c515fce44d495',
+        value: envVars.PRI_SUBNET_ID,
       },
       {
         namespace: 'aws:autoscaling:asg',
@@ -51,11 +50,6 @@ export class BeanstalkStack extends cdk.Stack {
         namespace: 'aws:autoscaling:asg',
         optionName: 'MaxSize',
         value: '3',
-      },
-      {
-        namespace: 'aws:elbv2:listener:default',
-        optionName: 'ListenerEnabled',
-        value: 'true',
       },
       {
         namespace: 'aws:autoscaling:asg',
@@ -125,16 +119,16 @@ export class BeanstalkStack extends cdk.Stack {
           },
           build: {
             commands: [
-              'mvn package', 'mv target/*.war app.war',
+              'mvn package', 'mv target/*.war ROOT.war',
             ],
           },
-          post_build: {
-            commands: [`eb deploy ${envVars.APP_STAGE_NAME}`],
-          },
+          //post_build: {
+          //  commands: [`eb deploy ${envVars.APP_STAGE_NAME}`],
+          //},
         },
         artifacts: {
           files: [
-            'app.war',
+            'ROOT.war',
             '.ebextenstions/**/*',
           ],
         },
