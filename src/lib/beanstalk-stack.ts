@@ -57,12 +57,6 @@ export class BeanstalkStack extends cdk.Stack {
         optionName: 'ListenerEnabled',
         value: 'true',
       },
-
-      {
-        namespace: 'aws:elastibeanstalk:command',
-        optionName: 'DeploymentPolicy',
-        value: 'Rolling',
-      },
       {
         namespace: 'aws:autoscaling:asg',
         optionName: 'MinSize',
