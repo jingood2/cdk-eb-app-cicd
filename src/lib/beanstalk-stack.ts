@@ -3,6 +3,8 @@ import * as Codebuild from '@aws-cdk/aws-codebuild';
 import * as EB from '@aws-cdk/aws-elasticbeanstalk';
 import * as IAM from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
+// eslint-disable-next-line no-duplicate-imports
+import { SecretValue } from '@aws-cdk/core';
 import { envVars } from './config';
 
 
@@ -74,6 +76,7 @@ export class BeanstalkStack extends cdk.Stack {
       owner: envVars.REPO_OWNER,
       repo: envVars.REPO_NAME,
       webhook: true,
+      //oauthToken: SecretValue.secretsManager('atcl/jingood2/github-token'),
       webhookFilters: webhooks,
       reportBuildStatus: true,
     });
