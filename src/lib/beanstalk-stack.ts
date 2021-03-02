@@ -44,7 +44,7 @@ export class BeanstalkStack extends cdk.Stack {
       },
       {
         namespace: 'aws:autoscaling:asg',
-        optionName: 'AvailabilityZones',
+        optionName: 'Availability Zones',
         value: 'Any',
       },
       {
