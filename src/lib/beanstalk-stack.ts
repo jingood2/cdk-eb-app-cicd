@@ -71,6 +71,10 @@ export class BeanstalkStack extends cdk.Stack {
       ).andHeadRefIs(envVars.BUILD_BRANCH),
     ];
 
+    /* new Codebuild.GitHubSourceCredentials(this, 'GithubCredentials', {
+      accessToken: cdk.SecretValue.secretsManager('atcl/jingood2/github-token'),
+    });
+ */
     const repo = Codebuild.Source.gitHub({
       owner: envVars.REPO_OWNER,
       repo: envVars.REPO_NAME,
@@ -121,7 +125,7 @@ export class BeanstalkStack extends cdk.Stack {
         },
       },
       source: repo,
-      timeout: cdk.Duration.minutes(20),
+      timeout: cdk.Duration.minutes(30),
     });
 
     project.role?.addManagedPolicy(
