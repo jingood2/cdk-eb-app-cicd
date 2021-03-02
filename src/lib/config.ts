@@ -9,7 +9,7 @@ export const envVars = {
   // change this to the branch of your choice
   BUILD_BRANCH: process.env.BUILD_BRANCH || '^refs/heads/main$',
   VPC_ID: 'vpc-0718c770a1fe6ebe6',
-  PUB_SUBNET_ID: ['subnet-0a96c515fce44d495', 'subnet-06bab824613954777'],
+  PUB_SUBNET_ID: ['subnet-0a96c515fce44d495'],
   PRI_SUBNET_ID: ['subnet-0e4882323b34072f0'],
 
 };
