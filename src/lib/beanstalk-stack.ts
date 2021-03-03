@@ -125,7 +125,10 @@ export class BeanstalkStack extends cdk.Stack {
             ],
           },
           post_build: {
-            commands: [`eb deploy ${envVars.APP_STAGE_NAME}`],
+            commands: [
+              `eb init ${envVars.APP_NAME} --region ${envVars.REGION}`,
+              `eb deploy ${envVars.APP_STAGE_NAME}`,
+            ],
           },
         },
         artifacts: {
