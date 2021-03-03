@@ -1,4 +1,5 @@
 import { App, Construct, Stack, StackProps } from '@aws-cdk/core';
+import { validateEnvVariables } from './lib/config';
 import { PipelineStack } from './lib/pipeline-stack';
 
 export class MyStack extends Stack {
@@ -15,6 +16,7 @@ const devEnv = {
   region: process.env.CDK_DEFAULT_REGION,
 };
 
+validateEnvVariables();
 const app = new App();
 
 new PipelineStack(app, 'CdkEBPipeline', { env: devEnv });
