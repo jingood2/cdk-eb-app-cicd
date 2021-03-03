@@ -16,7 +16,7 @@ export class BeanstalkStack extends cdk.Stack {
     super(scope, id, props);
 
     // get platform to be created
-    //const platform = this.node.tryGetContext('platform');
+    const platform = this.node.tryGetContext('platform');
 
     // beanstalk project setup
     const ebApp = new EB.CfnApplication(this, `${envVars.APP_NAME}-app`, {
@@ -70,13 +70,12 @@ export class BeanstalkStack extends cdk.Stack {
       },
     ];
 
-    const appName = 'app';
     const ebEnv = new EB.CfnEnvironment(this, `${envVars.APP_NAME}-env`, {
       // default environmentName is `develop`
       environmentName: envVars.APP_STAGE_NAME,
-      applicationName: ebApp.applicationName || appName,
-      solutionStackName: '64bit Amazon Linux 2 v4.1.5 running Tomcat 8.5 Corretto 8',
-      //platformArn: platform,
+      applicationName: envVars.APP_NAME,
+      //solutionStackName: '64bit Amazon Linux 2 v4.1.5 running Tomcat 8.5 Corretto 8',
+      platformArn: platform,
       optionSettings: options,
     });
 
