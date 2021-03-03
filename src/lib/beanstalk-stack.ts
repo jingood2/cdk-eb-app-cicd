@@ -74,8 +74,8 @@ export class BeanstalkStack extends cdk.Stack {
       // default environmentName is `develop`
       environmentName: envVars.APP_STAGE_NAME,
       applicationName: envVars.APP_NAME,
-      solutionStackName: '64bit Amazon Linux 2 v4.1.5 running Tomcat 8.5 Corretto 8',
-      //platformArn: '',
+      //solutionStackName: '64bit Amazon Linux 2 v4.1.5 running Tomcat 8.5 Corretto 8',
+      platformArn: 'arn:aws:elasticbeanstalk:ap-northeast-2::platform/Corretto 8 running on 64bit Amazon Linux 2/3.1.6',
       optionSettings: options,
     });
 
