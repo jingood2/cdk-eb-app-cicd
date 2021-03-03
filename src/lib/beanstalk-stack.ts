@@ -129,7 +129,7 @@ export class BeanstalkStack extends cdk.Stack {
           post_build: {
             commands: [
               `eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform Tomcat`,
-              `eb deploy ${envVars.APP_STAGE_NAME}`,
+              'eb deploy',
             ],
           },
         },
