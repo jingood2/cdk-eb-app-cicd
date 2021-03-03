@@ -115,15 +115,19 @@ export class BeanstalkStack extends cdk.Stack {
             },
           },
           pre_build: {
-            commands: ['pip install awsebcli', 'eb --version'],
+            commands: ['echo Installing eb-cli',
+              'pip3 install awsebcli --upgrade',
+              'eb --version'],
           },
           build: {
             commands: [
-              'mvn package', 'mv target/*.war ROOT.war',
+              'echo build started on `date`',
+              'mvn package',
+              'mv target/*.war ROOT.war',
             ],
           },
           post_build: {
-            commands: [`eb deploy ${envVars.APP_STAGE_NAME}`],
+            commands: [`eb deploy ${envVars.APP_STAGE_NAME} -staged`],
           },
         },
         artifacts: {
