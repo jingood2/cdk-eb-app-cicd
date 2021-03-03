@@ -115,7 +115,7 @@ export class BeanstalkStack extends cdk.Stack {
           pre_build: {
             commands: ['echo Installing eb-cli',
               'pip3 install awsebcli --upgrade',
-              'eb --version'],
+              'env'],
           },
           build: {
             commands: [
@@ -147,6 +147,12 @@ export class BeanstalkStack extends cdk.Stack {
             value: envVars.APP_STAGE_NAME,
           },
           // you can add more env variables here as per your requirement
+          EB_APP_NAME: {
+            value: envVars.APP_NAME,
+          },
+          EB_REGION: {
+            value: envVars.REGION,
+          },
         },
       },
       source: repo,
