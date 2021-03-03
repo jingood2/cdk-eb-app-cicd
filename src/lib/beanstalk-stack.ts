@@ -75,7 +75,7 @@ export class BeanstalkStack extends cdk.Stack {
       environmentName: envVars.APP_STAGE_NAME,
       applicationName: envVars.APP_NAME,
       solutionStackName: '64bit Amazon Linux 2 v4.1.5 running Tomcat 8.5 Corretto 8',
-      platformArn: platform,
+      //platformArn: '',
       optionSettings: options,
     });
 
