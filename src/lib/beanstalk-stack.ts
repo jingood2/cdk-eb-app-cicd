@@ -29,7 +29,6 @@ export class BeanstalkStack extends cdk.Stack {
         namespace: 'aws:ec2:vpc',
         optionName: 'VPCId',
         value: envVars.VPC_ID,
-
       },
       {
         namespace: 'aws:ec2:vpc',
@@ -127,7 +126,7 @@ export class BeanstalkStack extends cdk.Stack {
             ],
           },
           post_build: {
-            commands: [`eb deploy ${envVars.APP_STAGE_NAME} -staged`],
+            commands: [`eb deploy ${envVars.APP_STAGE_NAME} --staged`],
           },
         },
         artifacts: {
