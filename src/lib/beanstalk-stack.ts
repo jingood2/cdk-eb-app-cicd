@@ -1,10 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
 import * as Codebuild from '@aws-cdk/aws-codebuild';
-import { Cache } from '@aws-cdk/aws-codebuild';
 import * as EB from '@aws-cdk/aws-elasticbeanstalk';
 import * as IAM from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
-import { NONAME } from 'dns';
 // eslint-disable-next-line no-duplicate-imports
 import { envVars } from './config';
 
