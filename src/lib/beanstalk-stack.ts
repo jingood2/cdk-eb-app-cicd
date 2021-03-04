@@ -40,7 +40,7 @@ export class BeanstalkStack extends cdk.Stack {
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'Subnets',
-        value: envVars.PRI_SUBNET_ID,
+        value: envVars.PUB_SUBNET_ID,
       },
 
 
