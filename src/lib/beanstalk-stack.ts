@@ -133,8 +133,8 @@ export class BeanstalkStack extends cdk.Stack {
           build: {
             commands: [
               'echo build started on `date`',
-              `eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform ${envVars.PLATFORM_STACK}`,
-              'eb deploy',
+              `eb init ${envVars.APP_NAME} --region ${envVars.REGION}`,
+              `eb deploy ${envVars.APP_STAGE_NAME}`,
               //'mvn package',
               //'mv target/*.war ROOT.war',
             ],
