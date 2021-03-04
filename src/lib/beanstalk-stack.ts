@@ -30,17 +30,21 @@ export class BeanstalkStack extends cdk.Stack {
         optionName: 'VPCId',
         value: envVars.VPC_ID,
       },
-      {
+
+      /* {
         namespace: 'aws:ec2:vpc',
         optionName: 'ELBSubnets',
         value: envVars.PUB_SUBNET_ID,
       },
+ */
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'Subnets',
         value: envVars.PRI_SUBNET_ID,
       },
-      {
+
+
+      /*    {
         namespace: 'aws:autoscaling:asg',
         optionName: 'Availability Zones',
         value: 'Any',
@@ -54,7 +58,8 @@ export class BeanstalkStack extends cdk.Stack {
         namespace: 'aws:autoscaling:asg',
         optionName: 'MinSize',
         value: '1',
-      },
+      }, */
+
       {
         namespace: 'aws:ec2:instances',
         optionName: 'InstanceTypes',
@@ -74,7 +79,7 @@ export class BeanstalkStack extends cdk.Stack {
       // default environmentName is `develop`
       environmentName: envVars.APP_STAGE_NAME,
       applicationName: envVars.APP_NAME,
-      solutionStackName: '64bit Amazon Linux 2 v4.1.5 running Tomcat 8.5 Corretto 8',
+      solutionStackName: envVars.PLATFORM_STACK,
       //platformArn: 'arn:aws:elasticbeanstalk:ap-northeast-2::platform/Corretto 8 running on 64bit Amazon Linux 2/3.1.6',
       optionSettings: options,
     });
@@ -108,34 +113,51 @@ export class BeanstalkStack extends cdk.Stack {
         version: '0.2',
         phases: {
           install: {
-            runtime_versions: {
-              java: 'corretto8',
-            },
-          },
-          pre_build: {
-            commands: ['echo Installing eb-cli',
+            commands: [
+              'echo Installing eb-cli',
               'pip3 install awsebcli --upgrade',
-              'env'],
+              'env',
+            ],
           },
+
+          /*
+          pre_build: {
+            commands: [
+              'echo Installing eb-cli',
+              'pip3 install awsebcli --upgrade',
+              'env',
+            ],
+          },
+          */
+
           build: {
             commands: [
               'echo build started on `date`',
-              'mvn package',
-              'mv target/*.war ROOT.war',
+              `eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform ${envVars.PLATFORM_STACK}`,
+              'eb deploy',
+              //'mvn package',
+              //'mv target/*.war ROOT.war',
+            ],
+            finally: [
+              'echo maven build completed on `data`',
             ],
           },
-          post_build: {
+
+          /*
+            post_build: {
             commands: [
-              `eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform Tomcat`,
+              `eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform ${envVars.PLATFORM_STACK}`,
               'eb deploy',
             ],
           },
+ */
         },
         artifacts: {
           files: [
-            'ROOT.war',
-            '.ebextenstions/**/*',
+            //'ROOT.war',
+            //'.ebextenstions/**/*',
           ],
+
         },
       }),
       projectName: `${envVars.APP_NAME}-build`,
