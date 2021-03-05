@@ -126,7 +126,7 @@ export class BeanstalkStack extends cdk.Stack {
               //`eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
               //`eb deploy ${envVars.APP_STAGE_NAME}`,
               'mvn clean package',
-              'export POM_VERSION=`$(mvn -q -Dexec.executable=echo -Dexec.args=`${project.version}` --non-recursive exec:exec)`',
+              "export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)",
               'export WAR_NAME=app-`${POM_VERSION}`.war',
               'export EB_VERSION=`${POM_VERSION}`-`$(date +%s)`',
               'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-037729278610/`${WAR_NAME}`',
