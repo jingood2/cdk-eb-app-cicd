@@ -95,9 +95,9 @@ export class BeanstalkStack extends cdk.Stack {
       ).andHeadRefIs(envVars.BUILD_BRANCH),
     ];
 
-    /*  new Codebuild.GitHubSourceCredentials(this, 'GithubCredentials', {
+    new Codebuild.GitHubSourceCredentials(this, 'GithubCredentials', {
       accessToken: cdk.SecretValue.secretsManager('jingood2/aws-github-token'),
-    }); */
+    });
 
     const repo = Codebuild.Source.gitHub({
       owner: envVars.REPO_OWNER,
