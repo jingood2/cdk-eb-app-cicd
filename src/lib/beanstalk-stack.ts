@@ -23,6 +23,7 @@ export class BeanstalkStack extends cdk.Stack {
       applicationName: envVars.APP_NAME,
     });
 
+
     // role for ec2 instance
     const options: EB.CfnEnvironment.OptionSettingProperty[] = [
       {
@@ -94,9 +95,9 @@ export class BeanstalkStack extends cdk.Stack {
       ).andHeadRefIs(envVars.BUILD_BRANCH),
     ];
 
-    new Codebuild.GitHubSourceCredentials(this, 'GithubCredentials', {
-      accessToken: cdk.SecretValue.secretsManager('atcl/jingood2/github-token'),
-    });
+    /*  new Codebuild.GitHubSourceCredentials(this, 'GithubCredentials', {
+      accessToken: cdk.SecretValue.secretsManager('jingood2/aws-github-token'),
+    }); */
 
     const repo = Codebuild.Source.gitHub({
       owner: envVars.REPO_OWNER,
@@ -107,7 +108,7 @@ export class BeanstalkStack extends cdk.Stack {
       reportBuildStatus: true,
     });
 
-    const project = new Codebuild.Project(this, envVars.APP_NAME, {
+    const buildProject= new Codebuild.Project(this, envVars.APP_NAME, {
       ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
       buildSpec: Codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -115,46 +116,33 @@ export class BeanstalkStack extends cdk.Stack {
           install: {
             commands: [
               'echo Installing eb-cli',
-              'pip3 install awsebcli --upgrade',
-              'env',
+              'pip3 install awscli --upgrade',
             ],
           },
-
-          /*
-          pre_build: {
-            commands: [
-              'echo Installing eb-cli',
-              'pip3 install awsebcli --upgrade',
-              'env',
-            ],
-          },
-          */
 
           build: {
             commands: [
               'echo build started on `date`',
-              `eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
-              `eb deploy ${envVars.APP_STAGE_NAME}`,
+              //`eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
+              //`eb deploy ${envVars.APP_STAGE_NAME}`,
+              'mvn clean package',
+              'export POM_VERSION=`$(mvn -q -Dexec.executable=echo -Dexec.args=`${project.version}` --non-recursive exec:exec)`',
+              'export WAR_NAME=app-`${POM_VERSION}`.war',
+              'export EB_VERSION=`${POM_VERSION}`-`$(date +%s)`',
+              'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-037729278610/`${WAR_NAME}`',
+
               //'mvn package',
               //'mv target/*.war ROOT.war',
             ],
           },
 
-          /*
-            post_build: {
-            commands: [
-              `eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform ${envVars.PLATFORM_STACK}`,
-              'eb deploy',
+          post_build: {
+            command: [
+              'env',
+              'aws elasticbeanstalk create-application-version --application-name `${EB_APP_NAME}` --version-label `${EB_VERSION}` --description `${CommitMessage}` --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-037729278610,S3Key=`${WAR_NAME}',
+              'aws elasticbeanstalk update-environment --application-name `${envVars.APP_NAME}` --version-label `${EB_VERSION}` --environment-name `${ebEnv.environmentName}`',
             ],
           },
- */
-        },
-        artifacts: {
-          files: [
-            //'ROOT.war',
-            //'.ebextenstions/**/*',
-          ],
-
         },
       }),
       projectName: `${envVars.APP_NAME}-build`,
@@ -178,8 +166,21 @@ export class BeanstalkStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(30),
     });
 
-    project.role?.addManagedPolicy(
+    buildProject.role?.addManagedPolicy(
       IAM.ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkFullAccess'),
     );
+
+    buildProject.role?.addToPrincipalPolicy(new IAM.PolicyStatement({
+      resources: ['*'],
+      actions: ['elasticbeanstalk:*',
+        'autoscaling:*',
+        'elasticloadbalancing:*',
+        'rds:*',
+        's3:*',
+        'ec2:*',
+        'cloudwatch:*',
+        'logs:*',
+        'cloudformation:*'],
+    }));
   }
 }
