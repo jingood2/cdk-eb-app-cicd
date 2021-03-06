@@ -130,7 +130,6 @@ export class BeanstalkStack extends cdk.Stack {
               'mvn clean package',
               //'export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args=\'${project.version}\' --non-recursive exec:exec)',
               'export WAR_NAME=app-1.0-SNAPSHOT.war',
-              'export EB_VERSION=1.0-SNAPSHOT-${date +%s}',
               'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-037729278610/app-1.0-SNAPSHOT.war',
               'env',
               'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-037729278610,S3Key=${WAR_NAME}',
