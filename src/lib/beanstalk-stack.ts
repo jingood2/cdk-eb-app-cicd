@@ -115,8 +115,10 @@ export class BeanstalkStack extends cdk.Stack {
         phases: {
           install: {
             commands: [
-              'echo Installing eb-cli',
-              'pip3 install awscli --upgrade',
+              'echo Installing awscli',
+              'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"',
+              'unzip /tmp/awscliv2.zip',
+              'sudo /tmp/aws/install',
             ],
           },
 
