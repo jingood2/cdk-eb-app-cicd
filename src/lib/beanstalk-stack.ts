@@ -154,6 +154,7 @@ export class BeanstalkStack extends cdk.Stack {
             'app.war',
             'result.json',
           ],
+          name: 'jingood2.zip',
         },
       }),
       projectName: `${envVars.APP_NAME}-build`,
