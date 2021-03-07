@@ -1,7 +1,10 @@
 // eslint-disable-next-line import/no-unresolved
 import * as Codebuild from '@aws-cdk/aws-codebuild';
+// eslint-disable-next-line no-duplicate-imports
+import { Artifacts } from '@aws-cdk/aws-codebuild';
 import * as EB from '@aws-cdk/aws-elasticbeanstalk';
 import * as IAM from '@aws-cdk/aws-iam';
+import { Bucket } from '@aws-cdk/aws-s3';
 import * as cdk from '@aws-cdk/core';
 // eslint-disable-next-line no-duplicate-imports
 import { envVars } from './config';
@@ -110,6 +113,9 @@ export class BeanstalkStack extends cdk.Stack {
 
     const buildProject= new Codebuild.Project(this, envVars.APP_NAME, {
       ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
+      artifacts: Artifacts.s3({
+        bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'beanstalk-ap-northeast-2-037729278610' ),
+      }),
       buildSpec: Codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
@@ -131,15 +137,23 @@ export class BeanstalkStack extends cdk.Stack {
               //'export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args=\'${project.version}\' --non-recursive exec:exec)',
               'export WAR_NAME=app-1.0-SNAPSHOT.war',
               'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
+              'cp target/*.war app.war',
               'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-037729278610/app-1.0-SNAPSHOT.war',
               'env',
               'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-037729278610,S3Key=${WAR_NAME}',
               'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_STAGE}',
+              'echo {"EB_VERSION": ${EB_VERSION}, "WAR_NAME": ${WAR_NAME}} > result.json',
 
               //'mvn package',
               //'mv target/*.war ROOT.war',
             ],
           },
+        },
+        artifacts: {
+          files: [
+            'target/app.war',
+            'result.json',
+          ],
         },
       }),
       projectName: `${envVars.APP_NAME}-build`,
