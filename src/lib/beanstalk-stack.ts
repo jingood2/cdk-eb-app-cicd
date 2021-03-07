@@ -151,7 +151,7 @@ export class BeanstalkStack extends cdk.Stack {
         },
         artifacts: {
           files: [
-            'target/app.war',
+            'app.war',
             'result.json',
           ],
         },
