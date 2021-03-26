@@ -2,8 +2,7 @@
   "app": "npx ts-node --prefer-ts-exts src/main.ts",
   "context": {
     "@aws-cdk/core:newStyleStackSynthesis": true,
-    "repositoryName": "cdk-tomcat-beanstalk-pipeline",
-    "platform": "arn:aws:elasticbeanstalk:ap-northeast-2::platform/Docker running on 64bit Amazon Linux/2.16.5"
+    "repositoryName": "cdk-tomcat-beanstalk-pipeline"
   },
   "plugin": [
     "cdk-assume-role-credential-plugin"

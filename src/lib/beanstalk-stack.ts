@@ -114,7 +114,7 @@ export class BeanstalkStack extends cdk.Stack {
     const buildProject= new Codebuild.Project(this, envVars.APP_NAME, {
       ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
       artifacts: Artifacts.s3({
-        bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'elasticbeanstalk-ap-northeast-2-037729278610' ),
+        bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'elasticbeanstalk-ap-northeast-2-955697143463' ),
       }),
       buildSpec: Codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -138,7 +138,7 @@ export class BeanstalkStack extends cdk.Stack {
               'export WAR_NAME=app-1.0-SNAPSHOT.war',
               'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
               'cp target/*.war app.war',
-              'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-037729278610/app-1.0-SNAPSHOT.war',
+              'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.war',
               'env',
               'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-037729278610,S3Key=${WAR_NAME}',
               'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_STAGE}',

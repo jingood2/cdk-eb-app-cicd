@@ -8,11 +8,11 @@ export const envVars = {
   APP_STAGE_NAME: process.env.APP_STAGE_NAME || 'develop',
   // change this to the branch of your choice
   BUILD_BRANCH: process.env.BUILD_BRANCH || 'master',
-  VPC_ID: 'vpc-0718c770a1fe6ebe6',
-  PUB_SUBNET_ID: 'subnet-06bab824613954777',
-  PRI_SUBNET_ID: 'subnet-0a96c515fce44d495',
+  VPC_ID: 'vpc-07db512afbc65d743',
+  PUB_SUBNET_ID: 'subnet-02e9c39807e853e29,subnet-03ed230c41c168b8c',
+  PRI_SUBNET_ID: 'subnet-0c82e48557abf2f9d,subnet-084521c508b6fe543',
   PLATFORM: 'Tomcat',
-  PLATFORM_STACK: '64bit Amazon Linux 2 v4.1.5 running Tomcat 8.5 Corretto 8',
+  PLATFORM_STACK: '64bit Amazon Linux 2 v4.1.6 running Tomcat 8.5 Corretto 8',
 
 };
 
