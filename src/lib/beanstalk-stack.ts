@@ -140,7 +140,7 @@ export class BeanstalkStack extends cdk.Stack {
               'cp target/*.war app.war',
               'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.war',
               'env',
-              'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-037729278610,S3Key=${WAR_NAME}',
+              'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
               'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_STAGE}',
               'echo {"EB_VERSION": ${EB_VERSION}, "WAR_NAME": ${WAR_NAME}} > result.json',
 
