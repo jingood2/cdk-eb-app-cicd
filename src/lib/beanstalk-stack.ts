@@ -185,7 +185,7 @@ export class BeanstalkStack extends cdk.Stack {
         },
       },
       source: repo,
-      timeout: cdk.Duration.minutes(10),
+      timeout: cdk.Duration.minutes(15),
     });
 
     buildProject.role?.addManagedPolicy(
