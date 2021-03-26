@@ -2,12 +2,12 @@ import * as chalk from 'chalk';
 
 export const envVars = {
   REGION: process.env.REGION || 'ap-northeast-2',
-  APP_NAME: process.env.APP_NAME || 'my-web',
+  APP_NAME: process.env.APP_NAME || 'petclinic-app',
   REPO_OWNER: process.env.REPO_OWNER || 'jingood2',
-  REPO_NAME: process.env.REPO_NAME || 'my-web-app',
+  REPO_NAME: process.env.REPO_NAME || 'spring-petclinic',
   APP_STAGE_NAME: process.env.APP_STAGE_NAME || 'develop',
   // change this to the branch of your choice
-  BUILD_BRANCH: process.env.BUILD_BRANCH || 'master',
+  BUILD_BRANCH: process.env.BUILD_BRANCH || 'main',
   VPC_ID: 'vpc-07db512afbc65d743',
   PUB_SUBNET_ID: 'subnet-02e9c39807e853e29,subnet-03ed230c41c168b8c',
   PRI_SUBNET_ID: 'subnet-0c82e48557abf2f9d,subnet-084521c508b6fe543',

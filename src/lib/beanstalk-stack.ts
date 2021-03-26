@@ -22,7 +22,7 @@ export class BeanstalkStack extends cdk.Stack {
     //const platform = this.node.tryGetContext('platform');
 
     // beanstalk project setup
-    const ebApp = new EB.CfnApplication(this, `${envVars.APP_NAME}-app`, {
+    const ebApp = new EB.CfnApplication(this, `${envVars.APP_NAME}`, {
       applicationName: envVars.APP_NAME,
     });
 
@@ -35,20 +35,18 @@ export class BeanstalkStack extends cdk.Stack {
         value: envVars.VPC_ID,
       },
 
-      /* {
+      {
         namespace: 'aws:ec2:vpc',
         optionName: 'ELBSubnets',
         value: envVars.PUB_SUBNET_ID,
       },
- */
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'Subnets',
         value: envVars.PUB_SUBNET_ID,
       },
 
-
-      /*    {
+      {
         namespace: 'aws:autoscaling:asg',
         optionName: 'Availability Zones',
         value: 'Any',
@@ -62,7 +60,7 @@ export class BeanstalkStack extends cdk.Stack {
         namespace: 'aws:autoscaling:asg',
         optionName: 'MinSize',
         value: '1',
-      }, */
+      },
 
       {
         namespace: 'aws:ec2:instances',
@@ -133,12 +131,12 @@ export class BeanstalkStack extends cdk.Stack {
               'echo build started on `date +%s`',
               //`eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
               //`eb deploy ${envVars.APP_STAGE_NAME}`,
-              'mvn clean package',
+              './mvnw clean package',
               //'export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args=\'${project.version}\' --non-recursive exec:exec)',
-              'export WAR_NAME=app-1.0-SNAPSHOT.war',
+              'export WAR_NAME=app-1.0-SNAPSHOT.jar',
               'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
-              'cp target/*.war app.war',
-              'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.war',
+              'cp target/*.war app.jar',
+              'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.jar',
               'env',
               'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
               'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_STAGE}',
@@ -151,7 +149,7 @@ export class BeanstalkStack extends cdk.Stack {
         },
         artifacts: {
           files: [
-            'app.war',
+            'app.jar',
             'result.json',
           ],
           name: 'jingood2.zip',
@@ -163,7 +161,7 @@ export class BeanstalkStack extends cdk.Stack {
         computeType: Codebuild.ComputeType.SMALL,
         environmentVariables: {
           WAR_NAME: {
-            value: 'app-1.0-SNAPSHOT.war',
+            value: 'app-1.0-SNAPSHOT.jar',
           },
           EB_STAGE: {
             value: envVars.APP_STAGE_NAME,
