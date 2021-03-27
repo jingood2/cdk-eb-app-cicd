@@ -79,7 +79,7 @@ export class BeanstalkStack extends cdk.Stack {
 
     const ebEnv = new EB.CfnEnvironment(this, `${envVars.APP_NAME}-env`, {
       // default environmentName is `develop`
-      environmentName: envVars.APP_STAGE_NAME,
+      environmentName: `${envVars.APP_NAME}/${envVars.APP_STAGE_NAME}`,
       applicationName: envVars.APP_NAME,
       solutionStackName: envVars.PLATFORM_STACK,
       //platformArn: 'arn:aws:elasticbeanstalk:ap-northeast-2::platform/Corretto 8 running on 64bit Amazon Linux 2/3.1.6',
