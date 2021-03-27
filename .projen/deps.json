@@ -11,17 +11,15 @@
     },
     {
       "name": "@typescript-eslint/eslint-plugin",
-      "version": "^4.3.0",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/parser",
-      "version": "^4.3.0",
       "type": "build"
     },
     {
       "name": "aws-cdk",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "build"
     },
     {
@@ -59,12 +57,12 @@
     },
     {
       "name": "projen",
-      "version": "^0.16.9",
+      "version": "^0.16.42",
       "type": "build"
     },
     {
       "name": "standard-version",
-      "version": "^9.0.0",
+      "version": "^9",
       "type": "build"
     },
     {
@@ -77,72 +75,71 @@
     },
     {
       "name": "typescript",
-      "version": "^3.9.5",
       "type": "build"
     },
     {
       "name": "@aws-cdk/assert",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-codebuild",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-codecommit",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-codedeploy",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-codepipeline-actions",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-codepipeline",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-elasticbeanstalk",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-iam",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-s3-assets",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/aws-s3",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/core",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/core",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/pipelines",
-      "version": "^1.91.0",
+      "version": "^1.95.0",
       "type": "runtime"
     },
     {

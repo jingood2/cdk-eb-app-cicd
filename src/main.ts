@@ -19,7 +19,7 @@ export class MyStack extends Stack {
 validateEnvVariables();
 const app = new App();
 
-new PipelineStack(app, 'CdkEBPipeline', { env: { account: '955697143463', region: 'ap-northeast-2' } });
+new PipelineStack(app, 'CdkAppPipeline', { env: { account: '955697143463', region: 'ap-northeast-2' } });
 // new MyStack(app, 'my-stack-prod', { env: prodEnv });
 
 //app.synth();

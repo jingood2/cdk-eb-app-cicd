@@ -34,7 +34,7 @@ export class PipelineStack extends cdk.Stack {
     });
 
     this.pipeline = new CdkPipeline(this, 'pipeline', {
-      pipelineName: 'cdk-tomcat-beanstalk-pipeline',
+      pipelineName: 'petclinic-app-pipeline',
       cloudAssemblyArtifact: this.cloudAssemblyArtifact,
       sourceAction: this.sourceAction,
       synthAction: SimpleSynthAction.standardYarnSynth({
@@ -45,6 +45,6 @@ export class PipelineStack extends cdk.Stack {
       }),
     });
 
-    this.pipeline.addApplicationStage(new BeanstalkStage(this, 'DEV', {}));
+    this.pipeline.addApplicationStage(new BeanstalkStage(this, 'BEANSTALK-DEV', {}));
   }
 }

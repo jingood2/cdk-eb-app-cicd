@@ -2,7 +2,7 @@
   "app": "npx ts-node --prefer-ts-exts src/main.ts",
   "context": {
     "@aws-cdk/core:newStyleStackSynthesis": true,
-    "repositoryName": "cdk-tomcat-beanstalk-pipeline"
+    "repositoryName": "petclinic-app-pipeline"
   },
   "plugin": [
     "cdk-assume-role-credential-plugin"

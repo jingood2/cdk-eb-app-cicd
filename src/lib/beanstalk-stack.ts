@@ -109,7 +109,7 @@ export class BeanstalkStack extends cdk.Stack {
       reportBuildStatus: true,
     });
 
-    const buildProject= new Codebuild.Project(this, envVars.APP_NAME, {
+    const buildProject= new Codebuild.Project(this, `${envVars.APP_NAME}-build`, {
       ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
       artifacts: Artifacts.s3({
         bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'elasticbeanstalk-ap-northeast-2-955697143463' ),

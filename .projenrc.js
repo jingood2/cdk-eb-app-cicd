@@ -1,10 +1,10 @@
 const { AwsCdkTypeScriptApp } = require('projen');
 
 const project = new AwsCdkTypeScriptApp({
-  cdkVersion: '1.91.0',
+  cdkVersion: '1.95.0',
   defaultReleaseBranch: 'main',
   jsiiFqn: 'projen.AwsCdkTypeScriptApp',
-  name: 'cdk-tomcat-beanstalk-pipeline',
+  name: 'petclinicapp-pipeline',
 
   /* AwsCdkTypeScriptAppOptions */
   // appEntrypoint: 'main.ts',                                                 /* The CDK app's entrypoint (relative to the source directory, which is "src" by default). */
@@ -24,7 +24,7 @@ const project = new AwsCdkTypeScriptApp({
   // cdkVersionPinning: false,                                                 /* Use pinned version instead of caret version for CDK. */
   context: {
     '@aws-cdk/core:newStyleStackSynthesis': true,
-    'repositoryName': 'cdk-tomcat-beanstalk-pipeline',
+    'repositoryName': 'petclinic-app-pipeline',
   }, /* Additional context to include in `cdk.json`. */
   // requireApproval: CdkApprovalLevel.BROADENING,                             /* To protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security-related changes before deploying them. */
 
