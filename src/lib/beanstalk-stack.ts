@@ -114,7 +114,7 @@ export class BeanstalkStack extends cdk.Stack {
       badge: true,
       artifacts: Artifacts.s3({
         bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'elasticbeanstalk-ap-northeast-2-955697143463' ),
-        includeBuildId: true,
+        includeBuildId: false,
         path: envVars.APP_NAME,
         name: 'app',
         packageZip: true,
@@ -139,13 +139,14 @@ export class BeanstalkStack extends cdk.Stack {
               './mvnw clean package',
               //'export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args=\'${project.version}\' --non-recursive exec:exec)',
               //'export WAR_NAME=app-1.0-SNAPSHOT.jar',
-              //'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
-              //'cp target/*.war app.jar',
+              'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
+              'export BUILD_ID=${CODE_BUILD_ID}',
+              'cp target/*.jar app.jar',
               //'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.jar',
               //'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${CODE_BUILD_ID} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
               //'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_STAGE}',
               'echo {"EB_VERSION": ${EB_VERSION}, "BUILD_ID": ${CODE_BUILD_ID}} > result.json',
-              'export S3_KEY=${EB_APP_NAME}/${CODE_BUILD_ID}/app',
+              'export S3_KEY=${EB_APP_NAME}/app',
 
               //'mvn package',
               //'mv target/*.war ROOT.war',
@@ -153,8 +154,9 @@ export class BeanstalkStack extends cdk.Stack {
           },
           post_build: {
             commands: [
-              'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${CODE_BUILD_ID} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${S3_KEY}',
-              'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${CODE_BUILD_ID} --environment-name ${EB_STAGE}',
+              'env',
+              'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${S3_KEY}',
+              'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name petclinic-develop',
             ],
           },
         },
