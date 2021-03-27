@@ -45,6 +45,10 @@ export class BeanstalkStack extends cdk.Stack {
         optionName: 'Subnets',
         value: envVars.PRI_SUBNET_ID,
       },
+      {
+        namespace: 'aws:elbv2:loadbalancer:default',
+        optionName: 'ListenerEnabled',
+      },
 
       {
         namespace: 'aws:autoscaling:asg',

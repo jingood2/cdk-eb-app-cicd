@@ -12,7 +12,7 @@ export const envVars = {
   PUB_SUBNET_ID: 'subnet-02e9c39807e853e29,subnet-03ed230c41c168b8c',
   PRI_SUBNET_ID: 'subnet-0c82e48557abf2f9d,subnet-084521c508b6fe543',
   PLATFORM: 'Tomcat',
-  PLATFORM_STACK: '64bit Amazon Linux 2 v4.1.6 running Tomcat 8.5 Corretto 8',
+  PLATFORM_STACK: '64bit Amazon Linux 2 v3.1.6 running Corretto 11',
 
 };
 
