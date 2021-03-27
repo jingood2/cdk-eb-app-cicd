@@ -146,7 +146,6 @@ export class BeanstalkStack extends cdk.Stack {
               //'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_STAGE}',
               'echo {"EB_VERSION": ${EB_VERSION}, "BUILD_ID": ${CODE_BUILD_ID}} > result.json',
               'export S3_KEY=${EB_APP_NAME}/${CODE_BUILD_ID}/app',
-              'env',
 
               //'mvn package',
               //'mv target/*.war ROOT.war',
