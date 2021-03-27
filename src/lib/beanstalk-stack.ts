@@ -111,8 +111,13 @@ export class BeanstalkStack extends cdk.Stack {
 
     const buildProject= new Codebuild.Project(this, `${envVars.APP_NAME}-build`, {
       ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
+      badge: true,
       artifacts: Artifacts.s3({
         bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'elasticbeanstalk-ap-northeast-2-955697143463' ),
+        includeBuildId: true,
+        path: envVars.APP_NAME,
+        name: 'app',
+        packageZip: true,
       }),
       buildSpec: Codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -133,17 +138,24 @@ export class BeanstalkStack extends cdk.Stack {
               //`eb deploy ${envVars.APP_STAGE_NAME}`,
               './mvnw clean package',
               //'export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args=\'${project.version}\' --non-recursive exec:exec)',
-              'export WAR_NAME=app-1.0-SNAPSHOT.jar',
-              'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
-              'cp target/*.war app.jar',
-              'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.jar',
+              //'export WAR_NAME=app-1.0-SNAPSHOT.jar',
+              //'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
+              //'cp target/*.war app.jar',
+              //'aws s3 cp target/*.war s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.jar',
+              //'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${CODE_BUILD_ID} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
+              //'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_STAGE}',
+              'echo {"EB_VERSION": ${EB_VERSION}, "BUILD_ID": ${CODE_BUILD_ID}} > result.json',
+              'export S3_KEY=${EB_APP_NAME}/${CODE_BUILD_ID}/app',
               'env',
-              'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
-              'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_STAGE}',
-              'echo {"EB_VERSION": ${EB_VERSION}, "WAR_NAME": ${WAR_NAME}} > result.json',
 
               //'mvn package',
               //'mv target/*.war ROOT.war',
+            ],
+          },
+          post_build: {
+            commands: [
+              'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${CODE_BUILD_ID} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${S3_KEY}',
+              'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${CODE_BUILD_ID} --environment-name ${EB_STAGE}',
             ],
           },
         },
@@ -152,7 +164,6 @@ export class BeanstalkStack extends cdk.Stack {
             'app.jar',
             'result.json',
           ],
-          name: 'jingood2.zip',
         },
       }),
       projectName: `${envVars.APP_NAME}-build`,
