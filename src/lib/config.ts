@@ -2,7 +2,7 @@ import * as chalk from 'chalk';
 
 export const envVars = {
   REGION: process.env.REGION || 'ap-northeast-2',
-  APP_NAME: process.env.APP_NAME || 'petclinic-app',
+  APP_NAME: process.env.APP_NAME || 'petclinic',
   REPO_OWNER: process.env.REPO_OWNER || 'jingood2',
   REPO_NAME: process.env.REPO_NAME || 'spring-petclinic',
   APP_STAGE_NAME: process.env.APP_STAGE_NAME || 'develop',
