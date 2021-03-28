@@ -81,7 +81,7 @@ export class BeanstalkStack extends cdk.Stack {
       },
     ];
 
-    const ebEnv = new EB.CfnEnvironment(this, `${envVars.APP_NAME}-env`, {
+    const ebEnv = new EB.CfnEnvironment(this, `${envVars.APP_NAME}-${props.stage}-env`, {
       // default environmentName is `develop`
       environmentName: `${envVars.APP_NAME}-${envVars.APP_STAGE_NAME}`,
       applicationName: envVars.APP_NAME,
@@ -113,7 +113,7 @@ export class BeanstalkStack extends cdk.Stack {
       reportBuildStatus: true,
     });
 
-    const buildProject= new Codebuild.Project(this, `${envVars.APP_NAME}-build`, {
+    const buildProject= new Codebuild.Project(this, `${envVars.APP_NAME}-${props.stage}-build`, {
       ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
       badge: true,
       artifacts: Artifacts.s3({
@@ -173,7 +173,7 @@ export class BeanstalkStack extends cdk.Stack {
           ],
         },
       }),
-      projectName: `${envVars.APP_NAME}-build`,
+      projectName: `${envVars.APP_NAME}-${props.stage}-project`,
       environment: {
         buildImage: Codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
         computeType: Codebuild.ComputeType.SMALL,
