@@ -185,7 +185,7 @@ export class BeanstalkStack extends cdk.Stack {
             },
             // you can add more env variables here as per your requirement
             EB_APP_NAME: {
-              value: envVars.APP_NAME,
+              value: `${envVars.APP_NAME}-${props.stage}`,
             },
             EB_REGION: {
               value: envVars.REGION,
@@ -277,7 +277,7 @@ export class BeanstalkStack extends cdk.Stack {
             },
             // you can add more env variables here as per your requirement
             EB_APP_NAME: {
-              value: envVars.APP_NAME,
+              value: `${envVars.APP_NAME}-${props.stage},
             },
             EB_REGION: {
               value: envVars.REGION,
