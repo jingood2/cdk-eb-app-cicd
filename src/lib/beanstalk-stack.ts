@@ -46,10 +46,15 @@ export class BeanstalkStack extends cdk.Stack {
         value: envVars.PRI_SUBNET_ID,
       },
       {
-        namespace: 'aws:elbv2:loadbalancer:default',
-        optionName: 'ListenerEnabled',
+        namespace: 'aws:elbv2:loadbalancer',
+        optionName: 'AccessLogsS3Enabled',
+        value: 'false',
       },
-
+      {
+        namespace: 'aws:elasticbeanstalk:environment:process:process_name',
+        optionName: 'Port',
+        value: '8080',
+      },
       {
         namespace: 'aws:autoscaling:asg',
         optionName: 'Availability Zones',
