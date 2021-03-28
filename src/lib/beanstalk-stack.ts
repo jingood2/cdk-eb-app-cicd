@@ -46,9 +46,9 @@ export class BeanstalkStack extends cdk.Stack {
         value: envVars.PRI_SUBNET_ID,
       },
       {
-        namespace: 'aws:elbv2:loadbalancer',
-        optionName: 'AccessLogsS3Enabled',
-        value: 'false',
+        namespace: 'aws:elasticbeanstalk:environment',
+        optionName: 'LoadBalancerType',
+        value: 'application',
       },
       {
         namespace: 'aws:elasticbeanstalk:environment:process:process_name',
@@ -57,8 +57,8 @@ export class BeanstalkStack extends cdk.Stack {
       },
       {
         namespace: 'aws:autoscaling:asg',
-        optionName: 'Availability Zones',
-        value: 'Any',
+        optionName: 'Custom Availability Zones',
+        value: 'ap-northeast-2a,ap-northeast-2c',
       },
       {
         namespace: 'aws:autoscaling:asg',
