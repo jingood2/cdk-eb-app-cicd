@@ -101,7 +101,7 @@ export class BeanstalkStack extends cdk.Stack {
     ];
 
     new Codebuild.GitHubSourceCredentials(this, 'GithubCredentials', {
-      accessToken: cdk.SecretValue.secretsManager('jingood2/aws-github-token'),
+      accessToken: cdk.SecretValue.secretsManager('magicmall/aws-github-token'),
     });
 
     const repo = Codebuild.Source.gitHub({
