@@ -57,11 +57,6 @@ export class BeanstalkStack extends cdk.Stack {
       },
       {
         namespace: 'aws:autoscaling:asg',
-        optionName: 'Custom Availability Zones',
-        value: 'ap-northeast-2a,ap-northeast-2c',
-      },
-      {
-        namespace: 'aws:autoscaling:asg',
         optionName: 'MaxSize',
         value: '3',
       },
