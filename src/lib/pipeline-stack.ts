@@ -5,6 +5,7 @@ import * as cdk from '@aws-cdk/core';
 import { SecretValue } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from '@aws-cdk/pipelines';
 import { BeanstalkStage } from './app-stage';
+import { envVars } from './config';
 
 export interface PipelineStackProps extends cdk.StackProps {
 
@@ -30,11 +31,11 @@ export class PipelineStack extends cdk.Stack {
       trigger: GitHubTrigger.POLL,
       owner: 'jingood2',
       repo: this.node.tryGetContext('repositoryName'),
-      branch: 'main',
+      branch: envVars.BUILD_BRANCH,
     });
 
     this.pipeline = new CdkPipeline(this, 'pipeline', {
-      pipelineName: 'petclinic-app-pipeline',
+      pipelineName: `${envVars.APP_NAME}-pipeline`,
       cloudAssemblyArtifact: this.cloudAssemblyArtifact,
       sourceAction: this.sourceAction,
       synthAction: SimpleSynthAction.standardYarnSynth({
@@ -45,6 +46,9 @@ export class PipelineStack extends cdk.Stack {
       }),
     });
 
-    this.pipeline.addApplicationStage(new BeanstalkStage(this, 'BEANSTALK-DEV', {}));
+    this.pipeline.addApplicationStage(new BeanstalkStage(this, 'dev', { stage: 'dev' }));
+
+    this.pipeline.addApplicationStage(new BeanstalkStage(this, 'prod', { stage: 'prod' }));
+
   }
 }

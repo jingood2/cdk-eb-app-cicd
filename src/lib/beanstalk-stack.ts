@@ -11,7 +11,7 @@ import { envVars } from './config';
 
 
 export interface BeanstalkStackProps extends cdk.StackProps {
-
+  stage: string;
 }
 
 export class BeanstalkStack extends cdk.Stack {
@@ -32,18 +32,18 @@ export class BeanstalkStack extends cdk.Stack {
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'VPCId',
-        value: envVars.VPC_ID,
+        value: props.stage == 'dev'? envVars.DEV.VPC_ID : envVars.PROD.VPC_ID,
       },
 
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'ELBSubnets',
-        value: envVars.PUB_SUBNET_ID,
+        value: props.stage == 'dev'? envVars.DEV.PUB_SUBNET_ID : envVars.PROD.PUB_SUBNET_ID,
       },
       {
         namespace: 'aws:ec2:vpc',
         optionName: 'Subnets',
-        value: envVars.PRI_SUBNET_ID,
+        value: props.stage == 'dev'? envVars.DEV.PRI_SUBNET_ID : envVars.PROD.PRI_SUBNET_ID,
       },
       {
         namespace: 'aws:elasticbeanstalk:environment',

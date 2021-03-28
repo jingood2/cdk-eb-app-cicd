@@ -1,5 +1,5 @@
-import { App, Construct, Stack, StackProps } from '@aws-cdk/core';
-import { validateEnvVariables } from './lib/config';
+import { App, Construct, Stack, StackProps, Tags } from '@aws-cdk/core';
+import { envVars, validateEnvVariables } from './lib/config';
 import { PipelineStack } from './lib/pipeline-stack';
 
 export class MyStack extends Stack {
@@ -19,4 +19,12 @@ export class MyStack extends Stack {
 validateEnvVariables();
 const app = new App();
 
-new PipelineStack(app, 'CdkAppPipeline', { env: { account: '955697143463', region: 'ap-northeast-2' } });
+const pipelineStack = new PipelineStack(app, `eb-${envVars.APP_NAME}-pipeline-stack`, { env: { account: '955697143463', region: 'ap-northeast-2' } });
+
+Tags.of(pipelineStack).add('cz-project', 'magicmall');
+Tags.of(pipelineStack).add('cz-org', 'skmg');
+Tags.of(pipelineStack).add('cz-stage', ' ');
+Tags.of(pipelineStack).add('cz-customer', 'LeeSungik' );
+Tags.of(pipelineStack).add('cz-ext1', ' ' );
+Tags.of(pipelineStack).add('cz-ext2', ' ' );
+Tags.of(pipelineStack).add('cz-ext3', ' ' );
