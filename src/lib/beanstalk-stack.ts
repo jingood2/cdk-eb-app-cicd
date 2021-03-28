@@ -225,7 +225,6 @@ export class BeanstalkStack extends cdk.Stack {
 
       buildProject = new Codebuild.Project(this, `${envVars.APP_NAME}-${props.stage}-deploy`, {
         ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
-        badge: true,
         buildSpec: Codebuild.BuildSpec.fromObject({
           version: '0.2',
           phases: {
