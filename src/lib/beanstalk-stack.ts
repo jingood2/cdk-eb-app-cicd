@@ -22,8 +22,8 @@ export class BeanstalkStack extends cdk.Stack {
     //const platform = this.node.tryGetContext('platform');
 
     // beanstalk project setup
-    const ebApp = new EB.CfnApplication(this, `${envVars.APP_NAME}`, {
-      applicationName: envVars.APP_NAME,
+    const ebApp = new EB.CfnApplication(this, `${envVars.APP_NAME}-${props.stage}`, {
+      applicationName: `${envVars.APP_NAME}-${props.stage}`,
     });
 
 
@@ -104,123 +104,213 @@ export class BeanstalkStack extends cdk.Stack {
       accessToken: cdk.SecretValue.secretsManager('magicmall/aws-github-token'),
     }); */
 
-    const repo = Codebuild.Source.gitHub({
-      owner: envVars.REPO_OWNER,
-      repo: envVars.REPO_NAME,
-      webhook: true,
-      //oauthToken: SecretValue.secretsManager('atcl/jingood2/github-token'),
-      webhookFilters: webhooks,
-      reportBuildStatus: true,
-    });
+    let buildProject;
 
-    const buildProject= new Codebuild.Project(this, `${envVars.APP_NAME}-${props.stage}-build`, {
-      ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
-      badge: true,
-      artifacts: Artifacts.s3({
-        bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'elasticbeanstalk-ap-northeast-2-955697143463' ),
-        includeBuildId: false,
-        path: envVars.APP_NAME,
-        name: 'app',
-        packageZip: true,
-      }),
-      buildSpec: Codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        phases: {
-          install: {
-            commands: [
-              'echo Installing awscli',
-              'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
-              'unzip awscliv2.zip',
-              './aws/install',
+    if (props.stage == 'dev') {
+      let repo = Codebuild.Source.gitHub({
+        owner: envVars.REPO_OWNER,
+        repo: envVars.REPO_NAME,
+        webhook: true,
+        //oauthToken: SecretValue.secretsManager('atcl/jingood2/github-token'),
+        webhookFilters: webhooks,
+        reportBuildStatus: true,
+      });
+
+      buildProject = new Codebuild.Project(this, `${envVars.APP_NAME}-${props.stage}-build`, {
+        ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
+        badge: true,
+        artifacts: Artifacts.s3({
+          bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'elasticbeanstalk-ap-northeast-2-955697143463' ),
+          includeBuildId: false,
+          path: envVars.APP_NAME,
+          name: 'result.zip',
+          packageZip: true,
+        }),
+        buildSpec: Codebuild.BuildSpec.fromObject({
+          version: '0.2',
+          phases: {
+            install: {
+              commands: [
+                'echo Installing awscli',
+                'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
+                'unzip awscliv2.zip',
+                './aws/install',
+              ],
+            },
+            build: {
+              commands: [
+                'echo build started on `date +%s`',
+                //`eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
+                //`eb deploy ${envVars.APP_STAGE_NAME}`,
+                //'./mvnw -DskipTests package',
+                //'export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args=\'${project.version}\' --non-recursive exec:exec)',
+                'export WAR_NAME=app-1.0-SNAPSHOT.jar',
+                'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
+                //'export BUILD_ID=${CODE_BUILD_ID}',
+                //'cp target/*.jar app.jar',
+                'export S3_KEY=${EB_APP_NAME}/result.zip',
+                'aws s3 cp target/*.jar s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.jar',
+                //'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
+                //'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name petclinic-develop',
+                'export EB_ENVIRONMENT=${EB_APP_NAME}-${EB_STAGE}',
+                'echo {"EB_VERSION": ${EB_VERSION}, "S3_KEY": ${S3_KEY}} > result.json',
+                //'mvn package',
+                //'mv target/*.war ROOT.war',
+              ],
+            },
+            post_build: {
+              commands: [
+                'env',
+                'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
+                'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name ${EB_ENVIRONMENT}',
+              ],
+            },
+          },
+          artifacts: {
+            files: [
+              'result.json',
             ],
           },
+        }),
+        projectName: `${envVars.APP_NAME}-${props.stage}-project`,
+        environment: {
+          buildImage: Codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+          computeType: Codebuild.ComputeType.SMALL,
+          environmentVariables: {
+            WAR_NAME: {
+              value: 'app-1.0-SNAPSHOT.jar',
+            },
+            EB_STAGE: {
+              value: props.stage,
+            },
+            // you can add more env variables here as per your requirement
+            EB_APP_NAME: {
+              value: envVars.APP_NAME,
+            },
+            EB_REGION: {
+              value: envVars.REGION,
+            },
+            POM_VERSION: {
+              value: '1.0-SNAPSHOT',
+            },
+            /* EB_VERSION: {
+              value: '1.0-SNAPSHOT' + new Date().getTime(),
+            }, */
 
-          build: {
-            commands: [
-              'echo build started on `date +%s`',
-              //`eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
-              //`eb deploy ${envVars.APP_STAGE_NAME}`,
-              './mvnw -DskipTests package',
-              //'export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args=\'${project.version}\' --non-recursive exec:exec)',
-              'export WAR_NAME=app-1.0-SNAPSHOT.jar',
-              'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
-              'export BUILD_ID=${CODE_BUILD_ID}',
-              //'cp target/*.jar app.jar',
-              'export S3_KEY=${EB_APP_NAME}/app',
-              'env',
-              'aws s3 cp target/*.jar s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.jar',
-              'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
-              'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name petclinic-develop',
-              'echo {"EB_VERSION": ${EB_VERSION}, "BUILD_ID": ${CODEBUILD_BUILD_ID}} > result.json',
-
-              //'mvn package',
-              //'mv target/*.war ROOT.war',
-            ],
           },
-
-          /* post_build: {
-            commands: [
-              'env',
-              'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${S3_KEY}',
-              'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name petclinic-develop',
-            ],
-          }, */
-
         },
-        artifacts: {
-          files: [
-            'app.jar',
-            'result.json',
-          ],
+        source: repo,
+        cache: Codebuild.Cache.bucket(new Bucket(this, 'MyBucket')),
+        timeout: cdk.Duration.minutes(15),
+      });
+
+      buildProject.role?.addManagedPolicy(
+        IAM.ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkFullAccess'),
+      );
+
+      buildProject.role?.addToPrincipalPolicy(new IAM.PolicyStatement({
+        resources: ['*'],
+        actions: ['elasticbeanstalk:*',
+          'autoscaling:*',
+          'elasticloadbalancing:*',
+          'rds:*',
+          's3:*',
+          'ec2:*',
+          'cloudwatch:*',
+          'logs:*',
+          'cloudformation:*'],
+      }));
+
+    } else if (props.stage == 'prod') {
+
+      buildProject = new Codebuild.Project(this, `${envVars.APP_NAME}-${props.stage}-deploy`, {
+        ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
+        badge: true,
+        buildSpec: Codebuild.BuildSpec.fromObject({
+          version: '0.2',
+          phases: {
+            install: {
+              commands: [
+                'echo Installing awscli',
+                'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"',
+                'unzip awscliv2.zip',
+                './aws/install',
+              ],
+            },
+            build: {
+              commands: [
+                'echo build started on `date +%s`',
+                //`eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
+                //`eb deploy ${envVars.APP_STAGE_NAME}`,
+                './mvnw -DskipTests package',
+                'export S3_KEY=${EB_APP_NAME}/result.zip',
+                'export WAR_NAME=app-1.0-SNAPSHOT.jar',
+                'export EB_ENVIRONMENT=${EB_APP_NAME}-${EB_STAGE}',
+                'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
+                'env',
+                //'aws s3 cp target/*.jar s3://elasticbeanstalk-ap-northeast-2-955697143463/app-1.0-SNAPSHOT.jar',
+                'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
+                'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name petclinic-develop',
+                //'echo {"EB_VERSION": ${EB_VERSION}, "BUILD_ID": ${CODEBUILD_BUILD_ID}} > result.json',
+                //'mvn package',
+                //'mv target/*.war ROOT.war',
+              ],
+            },
+            /* post_build: {
+              commands: [
+                'env',
+                'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${S3_KEY}',
+                'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name petclinic-develop',
+              ],
+            }, */
+          },
+        }),
+        projectName: `${envVars.APP_NAME}-${props.stage}-project`,
+        environment: {
+          buildImage: Codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+          computeType: Codebuild.ComputeType.SMALL,
+          environmentVariables: {
+            WAR_NAME: {
+              value: 'app-1.0-SNAPSHOT.jar',
+            },
+            EB_STAGE: {
+              value: props.stage,
+            },
+            // you can add more env variables here as per your requirement
+            EB_APP_NAME: {
+              value: envVars.APP_NAME,
+            },
+            EB_REGION: {
+              value: envVars.REGION,
+            },
+            POM_VERSION: {
+              value: '1.0-SNAPSHOT',
+            },
+            /* EB_VERSION: {
+              value: '1.0-SNAPSHOT' + new Date().getTime(),
+            }, */
+
+          },
         },
-      }),
-      projectName: `${envVars.APP_NAME}-${props.stage}-project`,
-      environment: {
-        buildImage: Codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
-        computeType: Codebuild.ComputeType.SMALL,
-        environmentVariables: {
-          WAR_NAME: {
-            value: 'app-1.0-SNAPSHOT.jar',
-          },
-          EB_STAGE: {
-            value: envVars.APP_STAGE_NAME,
-          },
-          // you can add more env variables here as per your requirement
-          EB_APP_NAME: {
-            value: envVars.APP_NAME,
-          },
-          EB_REGION: {
-            value: envVars.REGION,
-          },
-          POM_VERSION: {
-            value: '1.0-SNAPSHOT',
-          },
-          /* EB_VERSION: {
-            value: '1.0-SNAPSHOT' + new Date().getTime(),
-          }, */
+        timeout: cdk.Duration.minutes(15),
+      });
 
-        },
-      },
-      source: repo,
-      cache: Codebuild.Cache.bucket(new Bucket(this, 'MyBucket')),
-      timeout: cdk.Duration.minutes(15),
-    });
+      buildProject.role?.addManagedPolicy(
+        IAM.ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkFullAccess'),
+      );
 
-    buildProject.role?.addManagedPolicy(
-      IAM.ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkFullAccess'),
-    );
-
-    buildProject.role?.addToPrincipalPolicy(new IAM.PolicyStatement({
-      resources: ['*'],
-      actions: ['elasticbeanstalk:*',
-        'autoscaling:*',
-        'elasticloadbalancing:*',
-        'rds:*',
-        's3:*',
-        'ec2:*',
-        'cloudwatch:*',
-        'logs:*',
-        'cloudformation:*'],
-    }));
+      buildProject.role?.addToPrincipalPolicy(new IAM.PolicyStatement({
+        resources: ['*'],
+        actions: ['elasticbeanstalk:*',
+          'autoscaling:*',
+          'elasticloadbalancing:*',
+          'rds:*',
+          's3:*',
+          'ec2:*',
+          'cloudwatch:*',
+          'logs:*',
+          'cloudformation:*'],
+      }));
+    }
   }
 }
