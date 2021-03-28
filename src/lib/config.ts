@@ -31,7 +31,7 @@ export function validateEnvVariables() {
   for (let variable in envVars) {
     if (!envVars[variable as keyof typeof envVars]) {
       throw Error(
-        chalk.red(`[app]: Environment variable ${variable} is not defined!`),
+        chalk.red(`[app]: Environment variable ${variable} is not defined!!`),
       );
     }
   }
