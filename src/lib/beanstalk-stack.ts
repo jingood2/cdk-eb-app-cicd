@@ -51,7 +51,7 @@ export class BeanstalkStack extends cdk.Stack {
         value: 'application',
       },
       {
-        namespace: 'aws:elasticbeanstalk:environment:process:process_name',
+        namespace: 'aws:elasticbeanstalk:environment:process:default',
         optionName: 'Port',
         value: '8080',
       },
