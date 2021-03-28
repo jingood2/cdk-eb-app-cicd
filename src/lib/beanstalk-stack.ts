@@ -153,7 +153,7 @@ export class BeanstalkStack extends cdk.Stack {
                 //'aws elasticbeanstalk create-application-version --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-955697143463,S3Key=${WAR_NAME}',
                 //'aws elasticbeanstalk update-environment --application-name ${EB_APP_NAME} --version-label ${EB_VERSION} --environment-name petclinic-develop',
                 'export EB_ENVIRONMENT=${EB_APP_NAME}',
-                'echo {"EB_VERSION": ${EB_VERSION}, "S3_KEY": ${S3_KEY}} > result.json',
+                //'echo {"EB_VERSION": ${EB_VERSION}, "S3_KEY": ${S3_KEY}} > result.json',
                 //'mvn package',
                 //'mv target/*.war ROOT.war',
               ],
