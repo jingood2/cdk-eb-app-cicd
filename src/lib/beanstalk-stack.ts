@@ -97,7 +97,7 @@ export class BeanstalkStack extends cdk.Stack {
       Codebuild.FilterGroup.inEventOf(
         Codebuild.EventAction.PUSH,
         Codebuild.EventAction.PULL_REQUEST_MERGED,
-      ).andHeadRefIs(envVars.BUILD_BRANCH),
+      ).andBaseRefIs(envVars.BUILD_BRANCH),
     ];
 
     /* new Codebuild.GitHubSourceCredentials(this, 'GithubCredentials', {
