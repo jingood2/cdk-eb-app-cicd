@@ -201,6 +201,7 @@ export class BeanstalkStack extends cdk.Stack {
         },
       },
       source: repo,
+      cache: Codebuild.Cache.bucket(new Bucket(this, 'MyBucket')),
       timeout: cdk.Duration.minutes(15),
     });
 

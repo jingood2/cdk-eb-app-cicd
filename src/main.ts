@@ -20,6 +20,3 @@ validateEnvVariables();
 const app = new App();
 
 new PipelineStack(app, 'CdkAppPipeline', { env: { account: '955697143463', region: 'ap-northeast-2' } });
-// new MyStack(app, 'my-stack-prod', { env: prodEnv });
-
-//app.synth();
