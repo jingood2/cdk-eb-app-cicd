@@ -230,6 +230,7 @@ export class BeanstalkStack extends cdk.Stack {
         path: 'app-1.0-SNAPSHOT.jar',
       });
 
+
       buildProject = new Codebuild.Project(this, `${envVars.APP_NAME}-${props.stage}-deploy`, {
         ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
         source: source,
@@ -249,8 +250,8 @@ export class BeanstalkStack extends cdk.Stack {
                 'echo build started on `date +%s`',
                 //`eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
                 //`eb deploy ${envVars.APP_STAGE_NAME}`,
-                './mvnw -DskipTests package',
-                'export S3_KEY=${EB_APP_NAME}/result.zip',
+                //'./mvnw -DskipTests package',
+                //'export S3_KEY=${EB_APP_NAME}/result.zip',
                 'export WAR_NAME=app-1.0-SNAPSHOT.jar',
                 'export EB_ENVIRONMENT=${EB_APP_NAME}',
                 'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
