@@ -225,6 +225,11 @@ export class BeanstalkStack extends cdk.Stack {
 
     } else if (props.stage == 'prod') {
 
+      Codebuild.Source.s3({
+        bucket: Bucket.fromBucketName(this, 'Build-Output-Bucket', 'elasticbeanstalk-ap-northeast-2-955697143463' ),
+        path: 'app-1.0-SNAPSHOT.jar',
+      });
+
       buildProject = new Codebuild.Project(this, `${envVars.APP_NAME}-${props.stage}-deploy`, {
         ///buildSpec: Codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
         buildSpec: Codebuild.BuildSpec.fromObject({
