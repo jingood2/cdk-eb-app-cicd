@@ -142,7 +142,7 @@ export class BeanstalkStack extends cdk.Stack {
                 'echo build started on `date +%s`',
                 //`eb init ${envVars.APP_NAME} --region ${envVars.REGION} --platform tomcat-8-java-8`,
                 //`eb deploy ${envVars.APP_STAGE_NAME}`,
-                //'./mvnw -DskipTests package',
+                './mvnw -DskipTests package',
                 //'export POM_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args=\'${project.version}\' --non-recursive exec:exec)',
                 'export WAR_NAME=app-1.0-SNAPSHOT.jar',
                 'export EB_VERSION=1.0-SNAPSHOT_`date +%s`',
