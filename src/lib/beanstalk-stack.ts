@@ -166,11 +166,13 @@ export class BeanstalkStack extends cdk.Stack {
               ],
             },
           },
-          artifacts: {
+
+          /*           artifacts: {
             files: [
               'result.json',
             ],
           },
+ */
         }),
         projectName: `${envVars.APP_NAME}-${props.stage}-project`,
         environment: {
