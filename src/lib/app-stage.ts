@@ -10,6 +10,6 @@ export class BeanstalkStage extends cdk.Stage {
   constructor(scope: cdk.Construct, id: string, props: BeanstalkStageProps) {
     super(scope, id, props);
 
-    new BeanstalkStack(this, `eb-${envVars.APP_NAME}-${props.stage}-stack`, { stage: props.stage });
+    new BeanstalkStack(this, `eb-${envVars.APP_NAME}-${props.stage}-infra`, { stage: props.stage });
   }
 }
